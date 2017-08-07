@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const db = require('./db');
+const db = require('./config/database');
+const passport = require('passport');
 
 const app = express();
 
@@ -9,7 +10,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, '/../react-client/dist')));
+app.use(express.static(path.join(__dirname, './react-client/dist')));
+
+// Auth routes
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { successRedirect: '/profile', failureRedirect: '/' }));
 
 app.get('/items', (req, res) => {
   items.selectAll((err, data) => {

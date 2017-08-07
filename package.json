@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
+    "start": "nodemon server.js",
     "react-dev": "webpack -d --watch"
   },
   "author": "Beth Johnson",
@@ -31,6 +31,8 @@
     "knex": "^0.13.0",
     "mongoose": "^4.8.6",
     "mysql": "^2.13.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
     "path": "^0.12.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
