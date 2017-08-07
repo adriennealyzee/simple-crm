@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+const mongoose = require('mongoose');
 
-var db = mongoose.connection;
+mongoose.connect('mongodb://localhost/simplecrm');
+const db = mongoose.connection;
 
 db.on('error', function() {
   console.log('mongoose connection error');
