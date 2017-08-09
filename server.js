@@ -3,6 +3,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const db = require('./config/database');
 const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+var routes = require('./app/routes');
 
 const app = express();
 
@@ -10,22 +14,53 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Connect React
 app.use(express.static(path.join(__dirname, './react-client/dist')));
 
+// Passport
+require('./config/passport')(passport);
+app.use(cookieParser());
+app.use(session({ secret: 'oompaloompa' }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+// Routes
+app.use('/', routes);
+
 // Auth routes
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_friends'] }));
+
+// app.get('/auth/facebook', passport.authenticate('facebook', {
+//   scope: ['email'],
+//   profileFields: ['emails', 'name', 'id'],
+// }));
 
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/profile', failureRedirect: '/' }));
+  passport.authenticate('facebook', {
+    successRedirect: '/profile',
+    failureRedirect: '/',
+  }));
+
+
+app.get('/profile', (req, res) => {
+  res.send('Logged in!');
+});
 
 app.get('/items', (req, res) => {
-  items.selectAll((err, data) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
-  });
+  // items.selectAll((err, data) => {
+  //   if (err) {
+  //     res.sendStatus(500);
+  //   } else {
+  //     res.json(data);
+  //   }
+  // });
+  res.send();
+});
+
+app.get('/login', (req, res) => {
+  // res.sendFile(path.join(__dirname, '/react-client/dist/login.html'));
+  res.send();
 });
 
 app.listen(3000, () => {
