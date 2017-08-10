@@ -6,11 +6,11 @@ const List = (props) => {
   return (
     <div>
       <h4>List ({ props.items.length })</h4>
-      { props.items.map( (item, index) =>
-        <Link to={"/friend/:" + item.facebook.id} >
-          <ListItem item={item} key={index} />
-        </Link>
-      ) }
+      <ul className="collection">
+        { props.items.map( (item, index) =>
+          <Link to={"/friend/:" + item._id} key={index}><ListItem item={item} key={index} /></Link>
+        ) }
+      </ul>
     </div>
   );
 };

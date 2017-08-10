@@ -49,7 +49,7 @@ class App extends React.Component {
         <div>
           <p>Logged in with Facebook.</p>
           Hello { this.state.currentUser.local.name }!
-          <List items={this.state.items}/>
+          <List items={this.state.items} />
         </div>
       )
     }
