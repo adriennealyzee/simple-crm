@@ -27,6 +27,12 @@ a{
     text-decoration: none;
 }
 
+p.title{
+    text-transform: uppercase;
+    color: #a5a5a5;
+    font-weight: bold;
+}
+
 /* Collections */
 
 .collection {
@@ -40,9 +46,11 @@ a{
 .collection .collection-item {
     background-color: #fff;
     line-height: 1.5rem;
-    padding: 10px 20px;
+    padding: 7px 20px;
     margin: 0;
     /*border-bottom: 1px solid #e0e0e0;*/
+    -webkit-transition: background-color 7s;
+    transition: background-color .7s;
 }
 
 .collection .collection-item.avatar {
@@ -71,7 +79,15 @@ a{
 }
 
 .collection .collection-item.avatar .title {
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.collection .collection-item:hover {
+    background-color: #edeeef;
+    -webkit-transition: background-color 0.7s;
+    transition: background-color 0.7s;
+    /*color: #eafaf9;*/
 }
 
 .collection .collection-item.avatar p {
@@ -90,7 +106,7 @@ a{
 
 .collection .collection-item.active {
     background-color: #26a69a;
-    color: #eafaf9;
+    color: #eafaf9;color: #161616;
 }
 
 .collection .collection-item.active .secondary-content {
@@ -101,7 +117,8 @@ a{
     display: block;
     -webkit-transition: .25s;
     transition: .25s;
-    color: #26a69a;
+    /*color: #26a69a;*/
+    color: #161616;
 }
 
 .collection a.collection-item:not(.active):hover {
@@ -111,7 +128,7 @@ a{
 .collection.with-header .collection-header {
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
-    padding: 10px 20px;
+    /*padding: 10px 20px;*/
 }
 
 .collection.with-header .collection-item {
@@ -325,7 +342,8 @@ ul:not(.browser-default) > li {
 }
 
 a {
-    color: #039be5;
+    /*color: #039be5;*/
+    color: #161616;
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
 }

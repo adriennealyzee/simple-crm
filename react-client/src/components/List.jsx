@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const List = (props) => {
   return (
     <div>
-      <h4>List ({ props.items.length })</h4>
+      <p className="title">List ({ props.items.length })</p>
       <ul className="collection">
         { props.items.map( (item, index) =>
           <Link to={"/friend/:" + item._id} key={index}><ListItem item={item} key={index} /></Link>
