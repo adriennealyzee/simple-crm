@@ -34,13 +34,12 @@ module.exports = function(passport) {
         } else if (user) {
           return done(null, err);
         } else {
-          console.log('\n \n \n * * * * profile', profile);
           const newUser = new User();
           newUser.facebook.id = profile.id;
           newUser.facebook.token = accessToken;
           newUser.facebook.url = profile.profileUrl;
           newUser.facebook.photo = profile.photos[0].value;
-          newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+          newUser.local.name = profile.name.givenName + ' ' + profile.name.familyName;
           if (profile.photos){
             newUser.facebook.photo = profile.photos[0].value;
           }
@@ -59,20 +58,16 @@ module.exports = function(passport) {
             // let friendsList = [];
             axios.get(friendsUrl)
               .then(function(res) {
-                // console.log('friendsList', friendsList);
-
                 var friends = res.data.data;
 
                 //Convert to async
                 async.each(friends, (friend, cb) => {
-                  console.log('async');
-                  console.log('friends', friends);
                   // create new friend
                   var newFriend = new Friend({
                     userId: newUserId,
+                    name: friend.name,
                     facebook: {
                       id: friend.id,
-                      name: friend.name,
                       photo: friend.picture.data.url
                     }
                   });
@@ -82,7 +77,7 @@ module.exports = function(passport) {
                       return console.log('Err saving user friend: ', friend, err);
                     }
                     cb();
-                    return console.log('Friend saved!', friend);
+                    return;
                   })
                 });
               })

@@ -2,7 +2,8 @@ import React from 'react';
 
 const ListItem = (props) => (
   <div>
-    { props.item.description }
+    <img src={props.item.facebook.photo} />
+    { props.item.name }
   </div>
 );
 

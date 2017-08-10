@@ -8,38 +8,56 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: ['Hello', 'Bye'],
+      items: [],
+      currentUser: '',
     };
   }
 
-  componentDidMount() {
-    axios.get('/allmypeople')
+  componentWillMount() {
+    axios.get('/currentuser')
       .then((res) => {
-        console.log('res', res);
-        console.log('Received contacts!');
+        if (res.data) {
+          this.setState({currentUser: res.data});
+        }
+      })
+      .catch((err) => {
+        console.log('err getting current user: ', err);
       });
-    // $.ajax({
-    //   url: '/items',
-    //   success: (data) => {
-    //     this.setState({
-    //       items: data,
-    //     });
-    //   },
-    //   error: (err) => {
-    //     console.log('err', err);
-    //   },
-    // });
+
+
+    axios.get('/allmypeople')
+      .then((friends) => {
+        this.setState({ items: friends.data });
+      })
+      .catch((err) => {
+          console.log('err user not logged in', err)
+        }
+      );
   }
 
   render() {
-    return (
-      <div>
-        <h1>Login</h1>
-        <a href="/auth/facebook">Login with Facebook</a>
-        <List items={this.state.items} />
-      </div>
-    );
+    console.log('this.state.currentUser', this.state.currentUser);
+
+    // TODO: make the conditional rendering neater
+    if (!this.state.currentUser || !this.state.items) {
+      console.log('CURRENT USER UNDEFINED');
+      return (
+        <div>
+          <h1>Login</h1>
+          <a href="/auth/facebook">Login with Facebook</a>
+        </div>
+      );
+    } else {
+      console.log('CURRENT USER DEFINED');
+      return (
+        <div>
+          Hello { this.state.currentUser.local.name }!
+          <List items={this.state.items}/>
+        </div>
+      )
+    }
   }
+
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
