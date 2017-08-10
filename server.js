@@ -38,7 +38,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/profile',
+    successRedirect: '/', // TODO may need to change this
     failureRedirect: '/',
   }));
 
@@ -47,16 +47,6 @@ app.get('/profile', (req, res) => {
   res.send('Logged in!');
 });
 
-app.get('/items', (req, res) => {
-  // items.selectAll((err, data) => {
-  //   if (err) {
-  //     res.sendStatus(500);
-  //   } else {
-  //     res.json(data);
-  //   }
-  // });
-  res.send();
-});
 
 app.get('/login', (req, res) => {
   // res.sendFile(path.join(__dirname, '/react-client/dist/login.html'));

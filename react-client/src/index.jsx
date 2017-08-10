@@ -36,11 +36,8 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('this.state.currentUser', this.state.currentUser);
-
     // TODO: make the conditional rendering neater
     if (!this.state.currentUser || !this.state.items) {
-      console.log('CURRENT USER UNDEFINED');
       return (
         <div>
           <h1>Login</h1>
@@ -48,9 +45,9 @@ class App extends React.Component {
         </div>
       );
     } else {
-      console.log('CURRENT USER DEFINED');
       return (
         <div>
+          <p>Logged in with Facebook.</p>
           Hello { this.state.currentUser.local.name }!
           <List items={this.state.items}/>
         </div>
@@ -60,4 +57,6 @@ class App extends React.Component {
 
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+// ReactDOM.render(<App />, document.getElementById('app'));
+
+export default App;
