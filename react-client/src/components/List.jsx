@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 const List = (props) => {
   return (
     <div>
-      <p className="title">List ({ props.items.length })</p>
+      <p className="title">Contacts ({ props.friends.length })</p>
       <ul className="collection">
-        { props.items.map( (item, index) =>
-          <Link to={"/friend/:" + item._id} key={index}><ListItem item={item} key={index} /></Link>
+        { props.friends.map( (friend, index) =>
+          <Link to={"/friend/:" + friend._id} key={index}><ListItem friend={friend} key={index} /></Link>
         ) }
       </ul>
     </div>
@@ -16,11 +16,11 @@ const List = (props) => {
 };
 
 List.defaultProps = {
-  items: [],
+  friends: [],
 };
 
 List.propTypes = {
-  items: React.PropTypes.Array,
+  friends: React.PropTypes.Array,
 };
 
 export default List;

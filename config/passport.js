@@ -25,7 +25,7 @@ module.exports = function(passport) {
     profileFields: ['id', 'name', 'email', 'link', 'locale', 'timezone', 'friends', 'picture'],
     // passReqToCallback: true,
   },
-  (accessToken, refreshToken, profile, done) => {
+  (accessToken, refreshToken, profile, done) => { -
     // defer execution of action until next pass of event loop
     process.nextTick(() => {
       User.findOne({ facebook_id: profile.id }, (err, user) => {
@@ -34,6 +34,8 @@ module.exports = function(passport) {
         } else if (user) {
           return done(null, err);
         } else {
+
+          // TODO urgent: change this to an upsert
           const newUser = new User();
           newUser.facebook.id = profile.id;
           newUser.facebook.token = accessToken;
@@ -63,6 +65,7 @@ module.exports = function(passport) {
                 //Convert to async
                 async.each(friends, (friend, cb) => {
                   // create new friend
+                  // TODO urgent: change this to an upsert
                   var newFriend = new Friend({
                     userId: newUserId,
                     name: friend.name,

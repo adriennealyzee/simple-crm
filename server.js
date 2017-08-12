@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 var routes = require('./app/routes');
+var scraper = require('./app/scraper');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(flash());
 
 // Routes
 app.use('/', routes);
+app.use('/', scraper);
 
 // Auth routes
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_friends'] }));
@@ -38,8 +40,8 @@ app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', '
 
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/', // TODO may need to change this
-    failureRedirect: '/',
+    successRedirect: '/#', // TODO may need to change this
+    failureRedirect: '/#',
   }));
 
 

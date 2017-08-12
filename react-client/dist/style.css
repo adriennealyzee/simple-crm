@@ -27,10 +27,19 @@ a{
     text-decoration: none;
 }
 
-p.title{
+p.title {
     text-transform: uppercase;
     color: #a5a5a5;
     font-weight: bold;
+}
+
+.small {
+    color: #a5a5a5;
+    font-size: 13px;
+}
+
+.squeezed-top-margin{
+    margin-top: 0px
 }
 
 /* Collections */
@@ -341,13 +350,29 @@ ul:not(.browser-default) > li {
     list-style-type: none;
 }
 
-a {
-    /*color: #039be5;*/
+.collection a {
     color: #161616;
-    text-decoration: none;
     -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: #039be5;
 }
 
 .circle {
     border-radius: 50%;
+}
+
+button {
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    color: #696969;
+    padding: 5px 15px;
+    font-size: 12px;
+}
+
+textarea {
+    resize: none;
 }
