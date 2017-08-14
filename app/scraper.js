@@ -17,6 +17,8 @@ scraper.get('/scrapecleaner', function(req, res) {
     company: '',
   };
 
+  console.log('req.query.person', req.query.person);
+
   searchFor(req.query.person)
     .then((searchResults) => {
       if (Array.isArray(searchResults)) {
@@ -31,9 +33,18 @@ scraper.get('/scrapecleaner', function(req, res) {
               console.log('result.role', result.role);
               let s = result.role.split('-');
               console.log('s', s);
-              cleanedData['location'] = s[0].trim();
-              cleanedData['title'] = s[1].trim();
-              cleanedData['company'] = s[2].trim();
+              if (s[0]) {
+                cleanedData['location'] = s[0].trim();
+              }
+
+              if (s[1]) {
+                cleanedData['title'] = s[1].trim();
+              }
+
+              if (s[2]){
+                cleanedData['company'] = s[2].trim();
+              }
+              
             } else if (link.includes('behance')) {
               cleanedData.behance = result.link
             } else if (link.includes('twitter')) {
@@ -46,6 +57,7 @@ scraper.get('/scrapecleaner', function(req, res) {
           }
         }
       }
+      console.log('cleanedData', cleanedData);
       res.send(cleanedData);
     })
     .catch((err) => {
@@ -60,7 +72,8 @@ const searchFor = function(person) {
   let google = {};
 
   return new Promise((resolve, reject) => {
-    var query = person.split('%20').join('+');
+    var query = person.split(' ').join('+');
+    console.log('query', query);
 
     let url = 'https://www.google.com/search?q=' + query;
     let links = [];

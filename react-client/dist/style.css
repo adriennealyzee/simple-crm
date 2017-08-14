@@ -27,6 +27,14 @@ a{
     text-decoration: none;
 }
 
+a:hover{
+    color: #094b88;
+}
+
+p.small-height {
+    line-height: 30%;
+}
+
 p.title {
     text-transform: uppercase;
     color: #a5a5a5;
@@ -34,8 +42,11 @@ p.title {
 }
 
 .small {
-    color: #a5a5a5;
     font-size: 13px;
+}
+
+.grey {
+    color: #949494;
 }
 
 .squeezed-top-margin{
