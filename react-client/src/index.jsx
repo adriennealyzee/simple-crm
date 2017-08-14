@@ -54,8 +54,8 @@ class App extends React.Component {
 const GuestGreeting = () => {
   return (
     <div>
-      <h1>Simple CRM</h1>
-      <a href="/auth/facebook">Login with Facebook</a>
+      <p>Simple CRM helps you manage your contacts.</p>
+      <a href="/auth/facebook"><img src="https://i.stack.imgur.com/LKMP7.png" width="72px" height="33px" /></a>
     </div>
   );
 };

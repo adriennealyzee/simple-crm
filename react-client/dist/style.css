@@ -19,9 +19,12 @@ body {
 
 @media only screen and (min-width: 993px) {
     .container {
-        width: 70%;
+        width: 90%;
     }
 }
+
+::-moz-selection { background: #0057ff; }
+::selection { background: #0057ff; }
 
 a{
     text-decoration: none;
@@ -31,14 +34,44 @@ a:hover{
     color: #094b88;
 }
 
-p.small-height {
+html, body {
+    margin: 0;
+}
+
+.header {
+    background-color: #161616;
+    color: #fff;
+    text-align: center;
+    font-family: 'Sentinel';
+    font-style: italic;
+    line-height: 24px;
+    margin-bottom: 15px;
+}
+
+.marginBottom5 {
+    margin-bottom: 5px;
+}
+
+.small-height {
     line-height: 30%;
+}
+
+.padding15 {
+    padding: 15px;
+}
+
+.clear{
+    clear: both;
 }
 
 p.title {
     text-transform: uppercase;
     color: #a5a5a5;
     font-weight: bold;
+}
+
+.left {
+    float: left;
 }
 
 .small {
@@ -51,6 +84,13 @@ p.title {
 
 .squeezed-top-margin{
     margin-top: 0px
+}
+
+/* Grid */
+
+.col:not(:first-child,:last-child) {
+    padding-right:7px;
+    padding-left:7px;
 }
 
 /* Collections */
