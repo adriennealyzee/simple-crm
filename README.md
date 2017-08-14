@@ -1,6 +1,6 @@
-# Node, React, and Mongoose/SQL #
+# SimpleCRM #
  
-A boilerplate for getting started with the best practices for building a web app.
+Contact manager.
  
 ## Getting started ##
 To install: `npm install`
