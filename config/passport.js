@@ -33,7 +33,6 @@ module.exports = function(passport) {
         } else {
           let newUser;
           if (user) {
-            console.log('user', user);
             newUser = user;
             // update user
           } else {
@@ -68,10 +67,6 @@ module.exports = function(passport) {
                 //Convert to async
                 async.each(friends, (friend, cb) => {
                   // create new friend
-                  // TODO urgent: change this to an upsert
-                  // console.log('friend.id', friend.id);
-                  console.log('friend', friend)
-                  console.log('friend.photo', friend.photo)
                   Friend.findOne({ "facebook.photo": friend.picture.data.url }, (err, f) => {
                     if (err) {
                       cb();
