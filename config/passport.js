@@ -69,9 +69,10 @@ module.exports = function(passport) {
                 async.each(friends, (friend, cb) => {
                   // create new friend
                   // TODO urgent: change this to an upsert
-                  console.log('friend.id', friend.id);
-
-                  Friend.findOne({ facebook: { id: friend.id } }, (err, f) => {
+                  // console.log('friend.id', friend.id);
+                  console.log('friend', friend)
+                  console.log('friend.photo', friend.photo)
+                  Friend.findOne({ "facebook.photo": friend.picture.data.url }, (err, f) => {
                     if (err) {
                       cb();
                       return;
