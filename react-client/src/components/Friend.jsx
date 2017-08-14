@@ -84,7 +84,6 @@ class Friend extends React.Component {
         <h3>{ this.state.info.name }</h3>
         <img src={this.state.info.facebook.photo} />
         <div>
-          {console.log(this.state.googledInfo)}
           <Info googledInfo={this.state.googledInfo} />
         </div>
         <div><Notes notes={this.state.notes} /></div>

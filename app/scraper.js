@@ -33,15 +33,12 @@ scraper.get('/scrapecleaner', function(req, res) {
               if (s[0]) {
                 cleanedData['location'] = s[0].trim();
               }
-
               if (s[1]) {
                 cleanedData['title'] = s[1].trim();
               }
-
               if (s[2]){
                 cleanedData['company'] = s[2].trim();
               }
-
             } else if (link.includes('behance')) {
               cleanedData.behance = result.link
             } else if (link.includes('twitter')) {
@@ -54,7 +51,6 @@ scraper.get('/scrapecleaner', function(req, res) {
           }
         }
       }
-      console.log('cleanedData', cleanedData);
       res.send(cleanedData);
     })
     .catch((err) => {

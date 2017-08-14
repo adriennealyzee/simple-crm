@@ -23,31 +23,34 @@ module.exports = function(passport) {
     clientSecret: configAuth.facebookAuth.clientSecret,
     callbackURL: configAuth.facebookAuth.callbackURL,
     profileFields: ['id', 'name', 'email', 'link', 'locale', 'timezone', 'friends', 'picture'],
-    // passReqToCallback: true,
   },
   (accessToken, refreshToken, profile, done) => { -
     // defer execution of action until next pass of event loop
     process.nextTick(() => {
-      User.findOne({ facebook_id: profile.id }, (err, user) => {
+      User.findOne({ "facebook.id": profile.id }, (err, user) => {
         if (err) {
           return done(err);
-        } else if (user) {
-          return done(null, err);
         } else {
-
-          // TODO urgent: change this to an upsert
-          const newUser = new User();
-          newUser.facebook.id = profile.id;
-          newUser.facebook.token = accessToken;
-          newUser.facebook.url = profile.profileUrl;
-          newUser.facebook.photo = profile.photos[0].value;
-          newUser.local.name = profile.name.givenName + ' ' + profile.name.familyName;
-          if (profile.photos){
+          let newUser;
+          if (user) {
+            console.log('user', user);
+            newUser = user;
+            // update user
+          } else {
+            newUser = new User();
+            newUser.facebook.id = profile.id;
+            newUser.facebook.token = accessToken;
+            newUser.facebook.url = profile.profileUrl;
             newUser.facebook.photo = profile.photos[0].value;
+            newUser.local.name = profile.name.givenName + ' ' + profile.name.familyName;
+            if (profile.photos){
+              newUser.facebook.photo = profile.photos[0].value;
+            }
+            if (profile.emails) {
+              newUser.email = profile.emails[0].value;
+            }
           }
-          if (profile.emails) {
-            newUser.email = profile.emails[0].value;
-          }
+
           newUser.save((err) => {
             if (err) {
               return console.log('Err saving user: ', err);
@@ -66,22 +69,36 @@ module.exports = function(passport) {
                 async.each(friends, (friend, cb) => {
                   // create new friend
                   // TODO urgent: change this to an upsert
-                  var newFriend = new Friend({
-                    userId: newUserId,
-                    name: friend.name,
-                    facebook: {
-                      id: friend.id,
-                      photo: friend.picture.data.url
+                  console.log('friend.id', friend.id);
+
+                  Friend.findOne({ facebook: { id: friend.id } }, (err, f) => {
+                    if (err) {
+                      cb();
+                      return;
+                    } else if (f) { // friend already exists
+                      cb();
+                      return;
+                    } else {
+                      var newFriend = new Friend({
+                        userId: newUserId,
+                        name: friend.name,
+                        facebook: {
+                          id: friend.id,
+                          photo: friend.picture.data.url
+                        }
+                      });
+                      // save to
+                      newFriend.save((err) => {
+                        if (err) {
+                          return console.log('Err saving user friend: ', friend, err);
+                        }
+                        cb();
+                        return;
+                      })
                     }
                   });
-                  // save to
-                  newFriend.save((err) => {
-                    if (err) {
-                      return console.log('Err saving user friend: ', friend, err);
-                    }
-                    cb();
-                    return;
-                  })
+
+
                 });
               })
               .catch(function(err) {
