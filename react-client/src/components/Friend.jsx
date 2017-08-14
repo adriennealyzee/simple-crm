@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import Notes from './Notes.jsx';
+import UserInfo from './UserInfo.jsx';
 
 // TODO: refactor so you can directly access routes
 
@@ -81,7 +83,7 @@ class Friend extends React.Component {
   render() {
     return (
       <div>
-        <Info photo={this.state.info.facebook.photo} name={this.state.info.name} googledInfo={this.state.googledInfo} />
+        <UserInfo photo={this.state.info.facebook.photo} name={this.state.info.name} googledInfo={this.state.googledInfo} />
         <div><Notes notes={this.state.notes} /></div>
         <div>
           <textarea type="text" onChange={this.handleChange} id="currentNote" value={this.state.currentNote} />
@@ -94,52 +96,6 @@ class Friend extends React.Component {
 
 const Loading = () => {
   return ( <div>Loading</div> )
-};
-
-const Info = (props) => {
-  return(
-    <div>
-      <div className="row">
-        <div className="col padding15">
-          <img src={props.photo} className="circle" />
-        </div>
-        <div className="col">
-          <h4 className="title small-height marginBottom5">
-            { props.name }
-          </h4>
-          <span className="small grey small-height">
-            { props.googledInfo.title }, { props.googledInfo.company }
-          </span>
-          <br></br>
-          <span className="small small-height">
-            { props.googledInfo.location }
-          </span>
-        </div>
-      </div>
-      <div className="row">
-        {props.googledInfo.linkedin && <p className="small-height"><a href={ props.googledInfo.linkedin } >LinkedIn</a></p>}
-        {props.googledInfo.facebook && <p className="small-height"><a href={ props.googledInfo.facebook } target="_blank">Facebook</a></p>}
-        {props.googledInfo.twitter && <p className="small-height"><a href={ props.googledInfo.twitter } target="_blank">Twitter</a></p>}
-        {props.googledInfo.instagram && <p className="small-height"><a href={ props.googledInfo.instagram } target="_blank">Instagram</a></p>}
-        {props.googledInfo.behance && <p className="small-height"><a href={ props.googledInfo.behance } target="_blank">Behance</a></p>}
-        {props.googledInfo.crunchbase && <p className="small-height"><a href={ props.googledInfo.linkedin } target="_blank">Crunchbase</a></p>}
-    </div>
-  </div>
-  )
-};
-
-const Notes = (props) => {
-  return (
-    <div>
-      <h5>Notes</h5>
-      { props.notes.map((note, index) =>
-        <div key={index}>
-          <span className="small grey">{note.date}</span>
-          <p className="squeezed-top-margin">{note.text}</p>
-          </div>)
-      }
-    </div>
-  )
 };
 
 export default Friend;

@@ -39,7 +39,6 @@ router.get('/notes', function(req, res) {
       console.log('err finding friend: ', err);
     }
     if (friend) {
-      console.log('friend.notes', friend.notes);
       res.send(friend.notes);
     }
   });
