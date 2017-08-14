@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/simplecrm');
+mongoose.connect('mongodb://ds153179.mlab.com:53179/heroku_0bjt87wj');
 const db = mongoose.connection;
 
 db.on('error', function() {
