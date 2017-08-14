@@ -59,7 +59,6 @@ module.exports = function(passport) {
 
             // Get friends
             const friendsUrl = 'https://graph.facebook.com/v2.10/me/taggable_friends?access_token=' + accessToken;
-            // let friendsList = [];
             axios.get(friendsUrl)
               .then(function(res) {
                 var friends = res.data.data;
