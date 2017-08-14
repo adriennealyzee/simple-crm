@@ -103,6 +103,6 @@ module.exports = function(passport) {
         }
       });
     });
-  },
+  }
   ));
 };
