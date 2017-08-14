@@ -17,3 +17,8 @@ To run webpack: `npm run react-dev`
   3. Create new migration files: `knex migrate:make migration_name`
  
 See http://knexjs.org/#Migrations for more information.
+
+## Technologies ##
+
+![](images/stack.png?raw=true)
+
