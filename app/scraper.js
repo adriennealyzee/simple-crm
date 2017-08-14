@@ -17,7 +17,6 @@ scraper.get('/scrapecleaner', function(req, res) {
     company: '',
   };
 
-  console.log('req.query.person', req.query.person);
 
   searchFor(req.query.person)
     .then((searchResults) => {
@@ -30,9 +29,7 @@ scraper.get('/scrapecleaner', function(req, res) {
               cleanedData.facebook = result.link;
             } else if (link.includes('linkedin')) {
               cleanedData.linkedin = result.link;
-              console.log('result.role', result.role);
               let s = result.role.split('-');
-              console.log('s', s);
               if (s[0]) {
                 cleanedData['location'] = s[0].trim();
               }
@@ -44,7 +41,7 @@ scraper.get('/scrapecleaner', function(req, res) {
               if (s[2]){
                 cleanedData['company'] = s[2].trim();
               }
-              
+
             } else if (link.includes('behance')) {
               cleanedData.behance = result.link
             } else if (link.includes('twitter')) {
@@ -57,7 +54,6 @@ scraper.get('/scrapecleaner', function(req, res) {
           }
         }
       }
-      console.log('cleanedData', cleanedData);
       res.send(cleanedData);
     })
     .catch((err) => {
@@ -73,7 +69,6 @@ const searchFor = function(person) {
 
   return new Promise((resolve, reject) => {
     var query = person.split(' ').join('+');
-    console.log('query', query);
 
     let url = 'https://www.google.com/search?q=' + query;
     let links = [];
@@ -109,7 +104,6 @@ const searchFor = function(person) {
 
           $(descElem).find('div').remove();
           item.description = $(descElem).text();
-          // console.log('item', item);
           links.push(item);
           if (i => keysLength) {
             resolve(links);

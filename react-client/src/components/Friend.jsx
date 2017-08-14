@@ -26,19 +26,11 @@ class Friend extends React.Component {
     axios.get('/friendinfo/?id=' + this.state.friendId)
       .then((res) => {
         this.setState({ info: res.data });
-
-        console.log('name', this.state.info.name);
         let q = this.state.info.name.split(" ").join("%20");
         let url = '/scrapecleaner?person=' + q;
         return axios.get(url)
           .then((googledInfo) => {
-            // let newInfo = this.state.info;
-            // newInfo['googledInfo'] = googledInfo.data;
-            // console.log('newInfo', newInfo);
-
-            console.log('googledInfo', googledInfo.data);
             this.setState({ googledInfo: googledInfo.data, infoLoaded: true });
-            console.log('googledInfoState', this.state.googledInfo)
           })
       })
       .catch((err) => {
@@ -60,7 +52,6 @@ class Friend extends React.Component {
     let newState = {};
     newState[e.target.id] = e.target.value;
     this.setState({ currentNote: e.target.value });
-    console.log('this.state.currentNote', this.state.currentNote);
   }
 
   handleClick(e) {
@@ -113,13 +104,14 @@ const Info = (props) => {
   return(
     <div>
       <p className="small grey">{ props.googledInfo.title }, { props.googledInfo.company }</p>
-      <p>{ props.googledInfo.location }</p>
-      {props.googledInfo.linkedin && <p className="small-height"><a href={ props.googledInfo.linkedin }>LinkedIn</a></p>}
-      {props.googledInfo.facebook && <p className="small-height"><a href={ props.googledInfo.facebook }>Facebook</a></p>}
-      {props.googledInfo.twitter && <p className="small-height"><a href={ props.googledInfo.twitter }>Twitter</a></p>}
-      {props.googledInfo.instagram && <p className="small-height"><a href={ props.googledInfo.instagram }>Instagram</a></p>}
-      {props.googledInfo.behance && <p className="small-height"><a href={ props.googledInfo.behance }>Behance</a></p>}
-      {props.googledInfo.crunchbase && <p className="small-height"><a href={ props.crunchbase.linkedin }>Crunchbase</a></p>}
+      <p className="small">{ props.googledInfo.location }</p>
+
+      {props.googledInfo.linkedin && <p className="small-height"><a href={ props.googledInfo.linkedin } >LinkedIn</a></p>}
+      {props.googledInfo.facebook && <p className="small-height"><a href={ props.googledInfo.facebook } target="_blank">Facebook</a></p>}
+      {props.googledInfo.twitter && <p className="small-height"><a href={ props.googledInfo.twitter } target="_blank">Twitter</a></p>}
+      {props.googledInfo.instagram && <p className="small-height"><a href={ props.googledInfo.instagram } target="_blank">Instagram</a></p>}
+      {props.googledInfo.behance && <p className="small-height"><a href={ props.googledInfo.behance } target="_blank">Behance</a></p>}
+      {props.googledInfo.crunchbase && <p className="small-height"><a href={ props.crunchbase.linkedin } target="_blank">Crunchbase</a></p>}
     </div>
   )
 };
