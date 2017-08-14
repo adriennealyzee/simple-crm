@@ -54,6 +54,7 @@ scraper.get('/scrapecleaner', function(req, res) {
           }
         }
       }
+      console.log('cleanedData', cleanedData);
       res.send(cleanedData);
     })
     .catch((err) => {

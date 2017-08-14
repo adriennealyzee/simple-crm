@@ -84,6 +84,7 @@ class Friend extends React.Component {
         <h3>{ this.state.info.name }</h3>
         <img src={this.state.info.facebook.photo} />
         <div>
+          {console.log(this.state.googledInfo)}
           <Info googledInfo={this.state.googledInfo} />
         </div>
         <div><Notes notes={this.state.notes} /></div>
@@ -111,7 +112,7 @@ const Info = (props) => {
       {props.googledInfo.twitter && <p className="small-height"><a href={ props.googledInfo.twitter } target="_blank">Twitter</a></p>}
       {props.googledInfo.instagram && <p className="small-height"><a href={ props.googledInfo.instagram } target="_blank">Instagram</a></p>}
       {props.googledInfo.behance && <p className="small-height"><a href={ props.googledInfo.behance } target="_blank">Behance</a></p>}
-      {props.googledInfo.crunchbase && <p className="small-height"><a href={ props.crunchbase.linkedin } target="_blank">Crunchbase</a></p>}
+      {props.googledInfo.crunchbase && <p className="small-height"><a href={ props.googledInfo.linkedin } target="_blank">Crunchbase</a></p>}
     </div>
   )
 };
@@ -122,7 +123,7 @@ const Notes = (props) => {
       <h4>Notes</h4>
       { props.notes.map((note, index) =>
         <div key={index}>
-          <span className="small">{note.date}</span>
+          <span className="small grey">{note.date}</span>
           <p className="squeezed-top-margin">{note.text}</p>
           </div>)
       }
