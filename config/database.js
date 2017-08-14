@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const configAuth = require('./auth');
 
-mongoose.connect('mongodb://ds153179.mlab.com:53179/heroku_0bjt87wj');
+let mongoUri = 'mongodb://' + configAuth.db.user + ':' + configAuth.db.password+ '@ds153179.mlab.com:53179/heroku_0bjt87wj';
+mongoose.connect(mongoUri);
 const db = mongoose.connection;
 
 db.on('error', function() {
