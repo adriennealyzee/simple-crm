@@ -10,6 +10,7 @@ const friendSchema = mongoose.Schema({
     photo: String,
   },
   notes: [mongoose.Schema.Types.Mixed],
+  tags: [String],
 });
 
 module.exports = mongoose.model('Friend', friendSchema);

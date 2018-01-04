@@ -18,7 +18,7 @@ router.get('/allmypeople', function(req, res) {
         res.sendStatus(500)
       }
       res.send(friends);
-    });
+    }).limit(100);
   }
 });
 
@@ -30,6 +30,18 @@ router.get('/friendinfo', function(req, res) {
     }
     res.send(friend[0]);
   })
+});
+
+router.get('/tags', function(req, res) {
+  const friendId = req.query.friendId;
+  Friend.findById(friendId, function(err, friend) {
+    if (err) {
+      console.log('err finding friend: ', err);
+    }
+    if (friend) {
+      res.send(friend.tags);
+    }
+  });
 });
 
 router.get('/notes', function(req, res) {
@@ -69,7 +81,27 @@ router.post('/addnote', function(req, res) {
       });
     }
   });
+});
 
+router.post('/addtag', function(req, res) {
+  console.log('adding a tag');
+  Friend.findById(req.body.friendId, function(err, friend) {
+    if (err) {
+      console.log('err finding friend: ', err);
+    }
+    if (friend) {
+      let newTag = req.body.newTag;
+      var newTags = [...friend.tags, newTag];
+      friend.tags = newTags;
+      friend.save((err) => {
+        if (err) {
+          console.log('err saving new friend: ', err);
+        }
+        res.status(200);
+        res.send();
+      })
+    }
+  })
 });
 
 module.exports = router;

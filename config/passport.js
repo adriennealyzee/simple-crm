@@ -79,49 +79,137 @@ module.exports = function(passport) {
             done(null, newUser);
             var newUserId = newUser.id;
 
-            // Get friends
-            var friendsUrl = 'https://graph.facebook.com/v2.10/me/taggable_friends?access_token=' + accessToken;
-            // let friendsList = [];
+            function getFriends() {
+              var friendsUrl = 'https://graph.facebook.com/v2.10/me/taggable_friends?access_token=' + accessToken;
 
-              axios.get(friendsUrl) // initial get request
-                .then(function(res) {
-                  var friends = res.data.data;
-                  friendsUrl = res.data.paging.cursors.next;
+              function recur() {
+                axios.get(friendsUrl)
+                  .then(function(res) {
+                    var friends = res.data.data;
 
-                  //Convert to async
-                  async.each(friends, (friend, cb) => {
-                    // create new friend
-                    Friend.findOne({ "facebook.photo": friend.picture.data.url }, (err, f) => {
-                      if (err) {
-                        cb();
-                        return;
-                      } else if (f) { // friend already exists
-                        cb();
-                        return;
-                      } else {
-                        var newFriend = new Friend({
-                          userId: newUserId,
-                          name: friend.name,
-                          facebook: {
-                            id: friend.id,
-                            photo: friend.picture.data.url
-                          }
-                        });
-                        // save to
-                        newFriend.save((err) => {
-                          if (err) {
-                            return console.log('Err saving user friend: ', friend, err);
-                          }
+                    // Save friends into database
+                    async.each(friends, (friend, cb) => {
+                      // create new friend
+                     // Friend.findOne({ "facebook.photo": friend.picture.data.url }, (err, f) => {
+                      Friend.findOne({ "name": friend.name }, (err, f) => {
+                        if (err) {
                           cb();
                           return;
-                        })
-                      }
+                        } else if (f) { // friend already exists
+                          cb();
+                          return;
+                        } else {
+                          var newFriend = new Friend({
+                            userId: newUserId,
+                            name: friend.name,
+                            facebook: {
+                              id: friend.id,
+                              photo: friend.picture.data.url
+                            }
+                          });
+                          // save to
+                          newFriend.save((err) => {
+                            if (err) {
+                              return console.log('Err saving user friend: ', friend, err);
+                            }
+                            cb();
+                            return;
+                          })
+                        }
+                      });
                     });
-                  });
-                })
-                .catch(function(err) {
-                  console.log('Err getting taggable_friends: ', err);
-                }); // end axios get request
+
+                    if (!res.data.paging.next) {
+                      return
+                    } else {
+                      friendsUrl = res.data.paging.next;
+                      recur();
+                    }
+                  })
+                  .catch(function(err) {
+                    console.log('err', err);
+                  })
+              }
+              recur();
+            }
+
+            getFriends();
+
+
+            // Get friends
+            // var items = [];
+            //
+            // async function getFriends() {
+            //   let friends = [], hasNext = true, friendsUrl = 'https://graph.facebook.com/v2.10/me/taggable_friends?access_token=' + accessToken;
+            //
+            //   while (hasNext) {
+            //     await axios.get(friendsUrl)
+            //       .then(function(res) {
+            //         friends.concat(res.data.data);
+            //         items.concat(res.data.data);
+            //         console.log('friends', friends)
+            //         console.log('res.data.paging.next', res.data.paging.next);
+            //
+            //         if (!res.data.paging.next) {
+            //           hasNext = false;
+            //         } else {
+            //           friendsUrl = res.data.paging.next;
+            //         }
+            //       })
+            //       .catch(function(err) {
+            //         console.log('err', err);
+            //       });
+            //   }
+            //   return friends;
+            // }
+            //
+            // getFriends().then((res) => {
+            //   console.log('res', res);
+            //   console.log('items', items);
+            // });
+
+
+
+            // axios.get(friendsUrl) // initial get request
+            //   .then(function(res) {
+            //     var friends = res.data.data;
+            //     friendsUrl = res.data.paging.cursors.next;
+            //
+            //     //Convert to async
+            //     async.each(friends, (friend, cb) => {
+            //       // create new friend
+            //       Friend.findOne({ "facebook.photo": friend.picture.data.url }, (err, f) => {
+            //         if (err) {
+            //           cb();
+            //           return;
+            //         } else if (f) { // friend already exists
+            //           cb();
+            //           return;
+            //         } else {
+            //           var newFriend = new Friend({
+            //             userId: newUserId,
+            //             name: friend.name,
+            //             facebook: {
+            //               id: friend.id,
+            //               photo: friend.picture.data.url
+            //             }
+            //           });
+            //           // save to
+            //           newFriend.save((err) => {
+            //             if (err) {
+            //               return console.log('Err saving user friend: ', friend, err);
+            //             }
+            //             cb();
+            //             return;
+            //           })
+            //         }
+            //       });
+            //     });
+            //   })
+            //   .catch(function(err) {
+            //     console.log('Err getting taggable_friends: ', err);
+            //   }); // end axios get request
+
           });
         }
       });

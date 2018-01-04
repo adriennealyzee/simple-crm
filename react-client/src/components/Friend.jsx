@@ -14,13 +14,17 @@ class Friend extends React.Component {
       friendId: id.split(':')[1], // TODO Refactor to do cleaner query?
       info: { facebook: { photo: '' } },
       googledInfo: {},
-      notes: [{ date: Date(), text:'Note1' }],
+      notes: [ {} ],
       currentNote: '',
       infoLoaded: false,
+      curTag: '',
+      tags: [],
     };
 
     this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmitTag = this.handleSubmitTag.bind(this);
+    this.handleNoteChange = this.handleNoteChange.bind(this);
+    this.handleTagChange = this.handleTagChange.bind(this);
   }
 
   componentWillMount() {
@@ -46,13 +50,51 @@ class Friend extends React.Component {
       .catch((err) => {
         console.log('err getting notes: ', err);
       });
+
+    axios.get('/tags', { params: { friendId: this.state.friendId } })
+      .then((res) => {
+        this.setState({ tags: res.data });
+      })
+      .catch((err) => {
+        console.log('err getting tags: ', err);
+      });
   }
 
-  handleChange(e) {
+  handleTagChange(e) {
+    this.setState({ curTag: e.target.value });
+  }
+
+  handleNoteChange(e) {
     // var newState = { friendId: this.state.friendId, info: this.state.info };
     let newState = {};
     newState[e.target.id] = e.target.value;
     this.setState({ currentNote: e.target.value });
+  }
+
+  handleSubmitTag(e) {
+    e.preventDefault();
+    const { tags } = this.state;
+    tags.push(this.state.curTag);
+    this.setState({ tags });
+
+    // Make an axios request to post 'tags'
+    axios.post('/addtag', { newTag: this.state.curTag, friendId: this.state.friendId })
+      .then((res) => {
+        this.setState({ curTag: '' }); // Clear notes
+
+        // Get the notes and update the state
+        axios.get('/tags', { params: { friendId: this.state.friendId } })
+          .then((res) => {
+            this.setState({ tags: res.data });
+          })
+          .catch((err) => {
+            console.log('err getting tags: ', err);
+          })
+      })
+      .catch((err) => {
+        console.log("err posting to /addtag: ", err);
+      });
+
   }
 
   handleClick(e) {
@@ -60,6 +102,7 @@ class Friend extends React.Component {
     const { notes } = this.state;
     notes.push({ date: Date(), text: this.state.currentNote });
     this.setState({ notes });
+
     // Make an axios request to post 'notes'
     axios.post('/addnote', { date: Date(), text: this.state.currentNote, friendId: this.state.friendId })
       .then((res) => {
@@ -83,9 +126,14 @@ class Friend extends React.Component {
     return (
       <div>
         <UserInfo photo={this.state.info.facebook.photo} name={this.state.info.name} googledInfo={this.state.googledInfo} />
+        <div>
+          <input type="text" onChange={this.handleTagChange} value={this.state.curTag} />
+          <button onClick={this.handleSubmitTag}>Add tag</button>
+          <div>{ this.state.tags.join(" ") }</div>
+        </div>
         <div><Notes notes={this.state.notes} /></div>
         <div>
-          <textarea type="text" onChange={this.handleChange} id="currentNote" value={this.state.currentNote} />
+          <textarea type="text" onChange={this.handleNoteChange} id="currentNote" value={this.state.currentNote} />
           <p><button onClick={this.handleClick}>Post</button></p>
         </div>
       </div>
