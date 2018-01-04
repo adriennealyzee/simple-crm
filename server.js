@@ -31,7 +31,10 @@ app.use('/', routes);
 app.use('/', scraper);
 
 // Auth routes
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_friends'] }));
+app.get('/auth/facebook', 
+  passport.authenticate('facebook', { 
+    scope: ['email', 'user_friends'] 
+  }));
 
 // app.get('/auth/facebook', passport.authenticate('facebook', {
 //   scope: ['email'],
@@ -44,6 +47,13 @@ app.get('/auth/facebook/callback',
     failureRedirect: '/#',
   }));
 
+app.get('/auth/google', passport.authenticate('google', { scope: ['email'] }));
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        successRedirect: '/#',
+        failureRedirect: '/failed',
+    }));
 
 app.get('/profile', (req, res) => {
   res.send('Logged in!');

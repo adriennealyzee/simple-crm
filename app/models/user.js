@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate');
 
 const userSchema = mongoose.Schema({
   local: {
@@ -14,6 +15,13 @@ const userSchema = mongoose.Schema({
     photo: String,
     token: String,
   },
+  google: {
+    id: String,
+    token: String,
+    email: String,
+  }
 });
+
+userSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('User', userSchema);

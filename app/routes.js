@@ -44,6 +44,10 @@ router.get('/notes', function(req, res) {
   });
 });
 
+router.get('/failed', function(req, res) {
+  res.send('failed');
+});
+
 router.post('/addnote', function(req, res) {
   console.log('adding a note');
   // Find friend and save friend

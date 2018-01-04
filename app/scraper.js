@@ -17,6 +17,9 @@ scraper.get('/scrapecleaner', function(req, res) {
     company: '',
   };
 
+  // TODO: check if req.query.id is in the friends database
+  // check if info
+
 
   searchFor(req.query.person)
     .then((searchResults) => {

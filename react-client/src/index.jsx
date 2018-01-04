@@ -56,6 +56,7 @@ const GuestGreeting = () => {
     <div>
       <p>Simple CRM helps you manage your contacts.</p>
       <a href="/auth/facebook"><img src="https://i.stack.imgur.com/LKMP7.png" width="72px" height="33px" /></a>
+      <p><a href="/auth/google">Sign In with Google</a></p>
     </div>
   );
 };

@@ -46,7 +46,6 @@ class Friend extends React.Component {
       .catch((err) => {
         console.log('err getting notes: ', err);
       });
-
   }
 
   handleChange(e) {
@@ -60,7 +59,7 @@ class Friend extends React.Component {
     e.preventDefault();
     const { notes } = this.state;
     notes.push({ date: Date(), text: this.state.currentNote });
-    this.setState({ notes })
+    this.setState({ notes });
     // Make an axios request to post 'notes'
     axios.post('/addnote', { date: Date(), text: this.state.currentNote, friendId: this.state.friendId })
       .then((res) => {
@@ -93,9 +92,5 @@ class Friend extends React.Component {
     )
   }
 }
-
-const Loading = () => {
-  return ( <div>Loading</div> )
-};
 
 export default Friend;
