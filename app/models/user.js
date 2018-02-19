@@ -19,7 +19,10 @@ const userSchema = mongoose.Schema({
     id: String,
     token: String,
     email: String,
-  }
+  },
+  meta: {
+    tags: Object,
+  },
 });
 
 userSchema.plugin(findOrCreate);

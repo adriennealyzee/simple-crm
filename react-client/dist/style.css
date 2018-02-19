@@ -52,13 +52,15 @@ textarea {
 }
 
 .header {
-    background-color: #161616;
-    color: #fff;
-    text-align: center;
-    font-family: 'Sentinel';
-    font-style: italic;
+    /*background-color: #161616;*/
+    /*color: #fff;*/
+    /*text-align: center;*/
+    /*font-family: 'Sentinel';*/
     line-height: 24px;
     margin-bottom: 15px;
+    margin-left: 70px;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid #eee;
 }
 
 .marginBottom5 {
@@ -439,4 +441,53 @@ button {
 
 textarea {
     resize: none;
+}
+
+.HolyGrail {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.HolyGrail-body {
+    display: flex;
+    flex: 1;
+}
+
+.HolyGrail-content {
+    flex: 1;
+}
+
+.HolyGrail-nav, .HolyGrail-ads {
+    /* 12em is the width of the columns */
+    flex: 0 0 2em;
+}
+
+.HolyGrail-nav {
+    /* put the nav on the left */
+    order: -1;
+}
+
+.HolyGrail,
+.HolyGrail-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.HolyGrail-nav {
+    order: -1;
+}
+
+@media (min-width: 768px) {
+    .HolyGrail-body {
+        flex-direction: row;
+        flex: 1;
+    }
+    .HolyGrail-content {
+        flex: 1;
+    }
+    .HolyGrail-nav, .HolyGrail-ads {
+        /* 12em is the width of the columns */
+        flex: 0 0 12em;
+    }
 }

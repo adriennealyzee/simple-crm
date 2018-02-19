@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../config/database');
 const router = express.Router();
 const Friend = require('./models/friend');
+const User = require('./models/user');
 const querystring = require('querystring');
 
 
@@ -85,23 +86,59 @@ router.post('/addnote', function(req, res) {
 
 router.post('/addtag', function(req, res) {
   console.log('adding a tag');
-  Friend.findById(req.body.friendId, function(err, friend) {
+  console.log('req.user.id', req.user.id)
+  console.log('req.body.newTag', req.body.newTag)
+
+  // add to user global store of tags
+  User.findById(req.user.id, function(err, user) {
     if (err) {
-      console.log('err finding friend: ', err);
+      console.log('err finding user: ', err);
     }
-    if (friend) {
+    console.log('user found: ', user)
+    if (user) {
       let newTag = req.body.newTag;
-      var newTags = [...friend.tags, newTag];
-      friend.tags = newTags;
-      friend.save((err) => {
+      if (!user.meta.tags) user.meta.tags = {};
+
+      var tags = Object.assign({}, user.meta.tags);
+
+      if (tags.hasOwnProperty(newTag)) {
+        tags[newTag]++;
+        user.meta.tags = Object.assign({}, tags);
+      } else {
+        user.meta.tags = Object.assign(tags, { [newTag]: 1 });
+      }
+
+      user.save((err) => {
         if (err) {
-          console.log('err saving new friend: ', err);
+          console.log('err saving user tags: ', err);
         }
-        res.status(200);
-        res.send();
+      }).then(item => {
+        console.log('item saved to database', item);
+
+        // add to friend
+        Friend.findById(req.body.friendId, function(err, friend) {
+          if (err) {
+            console.log('err finding friend: ', err);
+          }
+          if (friend) {
+            let newTag = req.body.newTag;
+            var newTags = [...friend.tags, newTag];
+            friend.tags = newTags;
+            friend.save((err) => {
+              if (err) {
+                console.log('err saving friend: ', err);
+              }
+              res.status(200);
+              res.send();
+            })
+          }
+        }); // end adding to friend
+
       })
     }
-  })
+  });
+
+
 });
 
 module.exports = router;

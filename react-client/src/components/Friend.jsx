@@ -18,7 +18,7 @@ class Friend extends React.Component {
       currentNote: '',
       infoLoaded: false,
       curTag: '',
-      tags: [],
+      tags: {},
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -123,19 +123,22 @@ class Friend extends React.Component {
   }
 
   render() {
+    const tags = Array.isArray(this.state.tags) ? this.state.tags.join(" ") : 'No tags yet';
     return (
-      <div>
-        <UserInfo photo={this.state.info.facebook.photo} name={this.state.info.name} googledInfo={this.state.googledInfo} />
-        <div>
-          <input type="text" onChange={this.handleTagChange} value={this.state.curTag} />
-          <button onClick={this.handleSubmitTag}>Add tag</button>
-          <div>{ this.state.tags.join(" ") }</div>
-        </div>
-        <div><Notes notes={this.state.notes} /></div>
-        <div>
-          <textarea type="text" onChange={this.handleNoteChange} id="currentNote" value={this.state.currentNote} />
-          <p><button onClick={this.handleClick}>Post</button></p>
-        </div>
+      <div className="HolyGrail-body">
+        <main className="HolyGrail-content">
+          <UserInfo photo={this.state.info.facebook.photo} name={this.state.info.name} googledInfo={this.state.googledInfo} />
+          <div>
+            <input type="text" onChange={this.handleTagChange} value={this.state.curTag} />
+            <button onClick={this.handleSubmitTag}>Add tag</button>
+            <div>{ tags }</div>
+          </div>
+          <div><Notes notes={this.state.notes} /></div>
+          <div>
+            <textarea type="text" onChange={this.handleNoteChange} id="currentNote" value={this.state.currentNote} />
+            <p><button onClick={this.handleClick}>Post</button></p>
+          </div>
+        </main>
       </div>
     )
   }

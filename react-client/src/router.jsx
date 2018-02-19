@@ -8,10 +8,12 @@ import Friend from './components/Friend.jsx';
 
 const Router = () => (
     <HashRouter>
+      <body className="HolyGrail">
       <div>
         <Route exact path="/" component={App} />
         <Route path="/friend/:id" component={Friend} />
       </div>
+      </body>
     </HashRouter>
 );
 

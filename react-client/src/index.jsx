@@ -17,6 +17,7 @@ class App extends React.Component {
     axios.get('/currentuser')
       .then((res) => {
         if (res.data) {
+          console.log('res.data', res.data);
           this.setState({currentUser: res.data});
         }
       })
@@ -35,26 +36,40 @@ class App extends React.Component {
       );
   }
 
+
   render() {
     const isLoggedIn = this.state.currentUser && this.state.friends;
+    const tagList = this.state.currentUser.meta ? Object.entries(this.state.currentUser.meta.tags).map(([key,value])=>{
+      return (
+        <div>{key} ({value.toString()})</div>
+      );
+    }) : 'No tags';
+
     // TODO: make the conditional rendering neater
     if (isLoggedIn) {
       return (
-        <div>
-          <p>Logged in with Facebook.</p>
-          Hello { this.state.currentUser.local.name }!
-          <List friends={this.state.friends} />
+        <div className="HolyGrail-body">
+          <main className="HolyGrail-content">
+            <p>Connected with Facebook. <a href="">Connect Gmail.</a></p>
+            {/*<p>Hello { this.state.currentUser.local.name }!</p>*/}
+
+            <List friends={this.state.friends} />
+          </main>
+          <nav className="HolyGrail-nav">
+            <h3>Categories</h3>
+            { tagList }
+          </nav>
         </div>
       )
     }
-    return <GuestGreeting />
+    return <div><GuestGreeting /></div>
   }
 }
 
 const GuestGreeting = () => {
   return (
     <div>
-      <p>Simple CRM helps you manage your contacts.</p>
+      <p>FriendForce helps you manage your contacts.</p>
       <a href="/auth/facebook"><img src="https://i.stack.imgur.com/LKMP7.png" width="72px" height="33px" /></a>
       <p><a href="/auth/google">Sign In with Google</a></p>
     </div>
